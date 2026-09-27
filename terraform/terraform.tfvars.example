@@ -1,0 +1,17 @@
+# Copy to terraform.tfvars and fill in your own values.
+# terraform.tfvars is gitignored and must never be committed.
+
+tenancy_ocid     = "ocid1.tenancy.oc1..REPLACE_ME"
+compartment_ocid = "ocid1.compartment.oc1..REPLACE_ME"
+region           = "us-ashburn-1"
+project_name     = "phi-lane"
+
+# Optional. Defaults in variables.tf are sized for VCN-native pod networking,
+# where every pod consumes a VCN IP address. Do not shrink the pod subnets.
+#
+# vcn_cidr                 = "10.0.0.0/16"
+# k8s_node_subnet_cidr     = "10.0.1.0/24"
+# phi_pod_subnet_cidr      = "10.0.16.0/20"
+# egress_pod_subnet_cidr   = "10.0.32.0/20"
+# api_endpoint_subnet_cidr = "10.0.0.0/28"
+# lb_subnet_cidr           = "10.0.2.0/24"
