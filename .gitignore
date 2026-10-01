@@ -22,3 +22,7 @@ venv/
 .env
 *.pem
 *.key
+
+# Terraform saved plans
+tfplan
+*.tfplan
