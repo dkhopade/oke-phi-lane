@@ -1,0 +1,66 @@
+# ---------------------------------------------------------------------------
+# Lane probes
+#
+# Two identical pods, differing only in which lane they are scheduled to.
+# Same image, same command, same (absent) network policy. The only variable
+# is the pod subnet their VNIC comes from, and therefore the route table
+# they inherit.
+#
+# This is the experiment the whole architecture rests on:
+#   egress-probe  reaches the internet
+#   phi-probe     does not, and nothing denied it
+# ---------------------------------------------------------------------------
+apiVersion: v1
+kind: Namespace
+metadata:
+  name: lane-demo
+---
+apiVersion: v1
+kind: Pod
+metadata:
+  name: phi-probe
+  namespace: lane-demo
+  labels:
+    lane: sealed
+spec:
+  nodeSelector:
+    phi-lane.oracle.com/lane: sealed
+  tolerations:
+    - key: nvidia.com/gpu
+      operator: Exists
+      effect: NoSchedule
+  containers:
+    - name: probe
+      image: docker.io/curlimages/curl:8.11.1
+      command: ["sleep", "7200"]
+      resources:
+        requests:
+          cpu: 50m
+          memory: 64Mi
+        limits:
+          cpu: 200m
+          memory: 128Mi
+  restartPolicy: Never
+---
+apiVersion: v1
+kind: Pod
+metadata:
+  name: egress-probe
+  namespace: lane-demo
+  labels:
+    lane: egress
+spec:
+  nodeSelector:
+    phi-lane.oracle.com/lane: egress
+  containers:
+    - name: probe
+      image: docker.io/curlimages/curl:8.11.1
+      command: ["sleep", "7200"]
+      resources:
+        requests:
+          cpu: 50m
+          memory: 64Mi
+        limits:
+          cpu: 200m
+          memory: 128Mi
+  restartPolicy: Never
