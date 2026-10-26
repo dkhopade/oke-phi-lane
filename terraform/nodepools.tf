@@ -58,7 +58,7 @@ resource "oci_containerengine_node_pool" "phi" {
   }
 
   node_config_details {
-    size = 1
+    size = 0
 
     placement_configs {
       availability_domain = data.oci_identity_availability_domains.ads.availability_domains[0].name

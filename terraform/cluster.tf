@@ -13,7 +13,7 @@ data "oci_containerengine_cluster_option" "main" {
 }
 
 locals {
-  k8s_version = reverse(sort(data.oci_containerengine_cluster_option.main.kubernetes_versions))[0]
+  k8s_version = "v1.36.4"  # pinned 2026-10-22; unpin after the conference
 }
 
 resource "oci_containerengine_cluster" "main" {
